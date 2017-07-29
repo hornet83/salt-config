@@ -311,7 +311,7 @@
 # If the autosign_file is specified, incoming keys specified in the
 # autosign_file will be automatically accepted. This is insecure.  Regular
 # expressions as well as globing lines are supported.
-#autosign_file: /etc/salt/autosign.conf
+autosign_file: /etc/salt/autosign.conf
 
 # Works like autosign_file, but instead allows you to specify minion IDs for
 # which keys will automatically be rejected. Will override both membership in
@@ -605,6 +605,14 @@ file_roots:
     - /srv/salt/dev
   prod:
     - /srv/salt/prod
+
+reactor:
+    - salt/key
+      - /srv/salt/dev/top.sls
+    - salt/minion/*/start:
+      - /srv/salt/reactor/basic.sls
+    - salt/job/*/ret/*:
+      - /srv/salt/reactor/job_ret.sls
 #
 #file_roots:
 #  base:
