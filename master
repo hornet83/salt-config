@@ -597,22 +597,18 @@ autosign_file: /etc/salt/autosign.conf
 # reliably ensured. A base environment is required to house the top file.
 # Example:
 file_roots:
+  base:
+    - /srv/salt/states
   provision:
     - /srv/salt/provision
-  base:
-    - /srv/salt/base
-  dev:
-    - /srv/salt/dev
-  prod:
-    - /srv/salt/prod
 
 reactor:
-    - salt/key
-      - /srv/salt/dev/top.sls
     - salt/minion/*/start:
-      - /srv/salt/reactor/basic.sls
+      - /srv/salt/reactor/base.sls
     - salt/job/*/ret/*:
       - /srv/salt/reactor/job_ret.sls
+    - oracle/install/base:
+      - /srv/salt/reactor/oracle_install.sls
 #
 #file_roots:
 #  base:
