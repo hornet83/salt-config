@@ -599,22 +599,26 @@ autosign_file: /etc/salt/autosign.conf
 file_roots:
   base:
     - /srv/salt/states
+    - /srv/spm/salt
   provision:
     - /srv/salt/provision
 
 reactor:
+    - salt/minion/dns*/start:
+      - /srv/salt/reactor/install_bind.sls
     - salt/minion/oracle*/start:
-      - /srv/salt/reactor/highstate.sls
       - /srv/salt/reactor/prep_oracle.sls
-    - salt/job/*/ret/*:
-      - /srv/salt/reactor/job_ret.sls
     - oracle/install/base:
       - /srv/salt/reactor/install_oracle.sls
-    - salt/minion/dns*/start:
+    - salt/minion/jenkins*/start:
+      - /srv/salt/reactor/prep_jenkins.sls
+    - jenkins/install/base:
+      - /srv/salt/reactor/install_jenkins.sls
+    - salt/minion/app*/start:
       - /srv/salt/reactor/highstate.sls
-      - /srv/salt/reactor/install_bind.sls
-    - salt/minion/*/start:
-      - /srv/salt/reactor/update_zone.sls
+    - salt/job/*/ret/*:
+      - /srv/salt/reactor/job_ret.sls
+
 #
 #file_roots:
 #  base:
