@@ -604,8 +604,12 @@ file_roots:
     - /srv/salt/provision
 
 reactor:
+    - salt/minion/kube*/start:
+      - /srv/salt/reactor/install_kube.sls
     - salt/minion/dns*/start:
       - /srv/salt/reactor/install_bind.sls
+    - salt/minion/artif*/start:
+      - /srv/salt/reactor/install_artifactory.sls
     - salt/minion/oracle*/start:
       - /srv/salt/reactor/prep_oracle.sls
     - oracle/install/base:
@@ -615,7 +619,7 @@ reactor:
     - jenkins/install/base:
       - /srv/salt/reactor/install_jenkins.sls
     - salt/minion/app*/start:
-      - /srv/salt/reactor/highstate.sls
+      - /srv/salt/reactor/install_webapp.sls
     - salt/job/*/ret/*:
       - /srv/salt/reactor/job_ret.sls
 
